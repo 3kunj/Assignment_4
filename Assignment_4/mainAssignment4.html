@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Assign4</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" >
+
+	<style type="text/css">
+body
+		{
+			padding-top: 21px;
+              background-size: cover;
+          background-position: center;
+            background-image: url("img/r8.jpg");
+		}
+        
+        .searchBox
+		{
+		  margin-top: 153px;
+		  margin-bottom: 72px;
+		}
+        
+		.jumbotron
+		{
+			color: #352433;
+			background: #f3f9f8;
+		}
+
+		.mainIntroduction
+		{
+		  margin-top: -12x;
+		  margin-left: 93px;
+		  margin-bottom: 147px;
+		  
+		  height: 403px;
+		  width: 1345px;
+		
+		}
+		.titleHead
+		{
+		  font-size: 24px;
+          color: #990099;
+		}  
+		
+
+		.carDatas
+		{
+			font-size: 42px;
+			margin-top: -21px;
+			margin-bottom: 33px;
+		}
+
+		.jumboClass
+		{
+			margin-top: -130px;
+		}
+
+		.jumboClass1
+		{
+			margin-top: 80px;
+		}
+
+		.storedCarData
+		{
+			font-size: 24px;
+			color: #3c3f61;
+		}
+	</style>
+	
+	<script>
+		function checkBlank(id,errorId)
+		{
+			var data = document.getElementById(id).value;
+			if (data == "") 
+			{
+				document.getElementById(errorId).innerHTML = "Please fill this field";
+			}
+			else
+			{
+				document.getElementById(errorId).innerHTML="";
+			}
+		}
+
+		function checkemailId()
+		{
+		var mail=document.getElementById("email").value;
+		var emailAt=mail.indexOf("@");
+		var emailDot=mail.lastIndexOf(".");
+		if(emailAt<4 || emailDot<emailAt+3)
+		{
+		document.getElementById("errorEmail").innerHTML="Please enter valid email address.";
+		}
+		else
+		{
+		document.getElementById("errorEmail").innerHTML="";
+		}
+		}
+
+		function isNumberKey(evt,show)
+		      {
+		         var charCode = (evt.which) ? evt.which : event.keyCode
+		         if (charCode > 31 && (charCode < 48 || charCode > 57))
+		         {
+		         	document.getElementById(show).innerHTML="Please enter numbers only.";
+		            return false;
+		         }
+		         return true;
+		      }
+
+		function storeInfos()
+		{
+			var name = document.getElementById("cname").value;
+
+			var address = document.getElementById("address").value;
+
+			var city = document.getElementById("city").value
+
+			var carDetails = document.getElementById("vehicle").value;
+
+			var site = "https://www.jdpower.com/Cars";
+
+			var blank = "_blank";
+            document.getElementById("success").innerHTML="Test case is successfull.";
+
+
+
+			var site = "https://www.jdpower.com/cars/";
+
+		
+
+			
+
+			siteArray = carDetails.split(" ",3);
+
+			var make = siteArray[0];
+
+			var model = siteArray[1];
+
+			var year = siteArray[2];
+
+	var site = "https://www.jdpower.com/cars/"+make+"/"+model+"/"+year+"";
+data = {'name':name,'address':address,'city':city,'carDetails': carDetails,'site':site};
+dataList = [];
+if(localStorage.getItem("data") != null){
+	dataList = JSON.parse(localStorage.getItem("data"));
+	
+}
+
+dataList.push(data);
+
+localStorage.setItem("data",JSON.stringify(dataList));
+		storeDetails.innerHTML += "Seller name is "+name+" and is from "+address+" in "+city+" city and car is <a href="+site+" target='_blank'>"+carDetails+"</a>. <br/><br/>";
+		console.log("false");
+		console.log(dataList);
+		
+		return false;
+}
+
+function CarSearch()
+{
+	window.location.href = '#carInformation';
+	console.log("search");
+dataList = JSON.parse(localStorage.getItem("data"));
+console.log(dataList);
+var search = document.getElementById('search').value;
+storeDetails.innerHTML = '';
+if (dataList.length > 0){
+dataList.forEach(function(data) {
+	if(data.name.includes(search) || data.address.includes(search) || data.city.includes(search) || data.carDetails.includes(search)  ){
+  storeDetails.innerHTML += "Seller name is "+data.name+" and is from "+data.address+" in "+data.city+" city and car is <a href="+data.site+" target='_blank'>"+data.carDetails+"</a>. <br/><br/>";
+  }
+});	
+}
+}
+
+function onload()
+{
+console.log("onload");
+dataList = JSON.parse(localStorage.getItem("data"));
+console.log(dataList);
+if (dataList.length > 0){
+dataList.forEach(function(data) {
+  storeDetails.innerHTML += "Seller name is "+data.name+" and is from "+data.address+" in "+data.city+" city and car is <a href="+data.site+" target='_blank'>"+data.carDetails+"</a>. <br/><br/>";
+});	
+}
+}
+
+	</script>
+
+</head>
+<body onload="onload()">
+
+
+<div class="container" >
+	<div class="jumbotron">
+		<h1><i class="fas fa-car"></i> Car Details</h1>
+		<p> There are some cars that you can purchase..</p>
+	</div>
+</div>
+
+
+<div class="mainIntroduction">
+  <div class="container">
+  	<form onsubmit="return false">
+    <div class="row">
+      <div class="col-xs-12">
+          <div class="searchBox">
+             <span class="titleHead">Search For Car Details</span>
+             <div class="input-group">
+              <input type="text" id="search" class="form-control" name="searchInfo" id="searchInfo" title="Enter Car Model like e.g.BMW 328i 2012" placeholder="BMW 328i 2012" required="">
+
+              <span class="input-group-btn">
+                <input type="button" class="btn btn-default" id="searchButton" onclick="CarSearch(); return false;" value="Search">
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
+</form>
+  </div>
+</div>
+<div class="container">
+	<div class="jumbotron jumboClass">
+		<h2 class="carDatas"><center> Sell car here..</center></h2>
+		<center>
+			<form onsubmit="storeInfos(); return false;">
+				<p>
+					<label>Enter name of the seller:</label>
+					<input type="text" id="cname" onblur="return checkBlank('cname','errorName')" name="cname" pattern="[A-Za-z-]+\s[A-Z-a-z]{1,32}" title="Please enter details like e.g. Kunj Tandel" required="">
+					<label id="errorName" style="color: red"></label>
+					
+				</p>
+				<p>
+					<label>Address:</label>
+					<textarea id="address" onblur="return checkBlank('address','errorAdd')" required=""></textarea>
+					<label id="errorAdd" style="color: red"></label>
+				</p>
+				<p>
+					<label>Your city:</label>
+					<input type="text" id="city" onblur="return checkBlank('city','errorCity')" pattern="[A-Za-z]{1,15}" title="Please enter details like e.g. Waterloo" name="city" required="">
+					<label id="errorCity" style="color: red"></label>
+				</p>
+				<p>
+					<label>Your phone number (format DDD-DDD-DDDD):</label>
+					<input type="tel" id="phone" onblur="return checkBlank('phone','errorphone')" name="phoneNumber" pattern="^\d{3}-\d{3}-\d{4}$" title="Phone Number should like e.g. 123-123-1234" placeholder="123-123-1234" required="">
+					<label id="errorphone" style="color: red"></label>
+				</p>
+				<p>
+					<label>Enter your email address:</label>
+					<input type="email" id="email" onblur="checkemailId()" name="email" title="Email address should like e.g. abcd@abc.com" placeholder="abcd@abc.com" required="">
+					<label id="errorEmail" style="color: red"></label>
+				</p>
+				<p>
+					<label>Enter the vehicle make, model and year:</label>
+					<input type="text" id="vehicle" onblur="return checkBlank('vehicle','errorveh')" name="vehicle" pattern="[A-Za-z-]+\s[A-Za-z-0-9]+\s[0-9]{4}" title="Please enter details like e.g.BMW 328i 2012" placeholder="BMW 328i 2012" required="">
+					<label id="errorveh" style="color: red"></label>
+				</p>
+				<p>
+                    <label hidden id="success"></label>
+>					<input type="reset" name="clear" value="Clear">
+				
+				<input type="submit" id="reg" name="register" value="Register">
+
+				
+			</p>
+			</form>
+			
+		</center>
+	</div>
+	<div class="jumbotron jumboClass1" id="carInformation">
+		<h1>Stored Car Information</h1>
+		<div>
+			<h4 class="storedCarData" id="storeDetails"></h4>
+		</div>
+	</div>
+</div>
+</body>
+</html>
